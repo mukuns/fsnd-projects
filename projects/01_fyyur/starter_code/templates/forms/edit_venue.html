@@ -1,42 +1,78 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Edit Venue{% endblock %}
 {% block content %}
-  <div class="form-wrapper">
-    <form class="form" method="post" action="/venues/{{venue.id}}/edit">
-      <h3 class="form-heading">Edit venue <em>{{ venue.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-      <div class="form-group">
-        <label for="name">Name</label>
-        {{ form.name(class_ = 'form-control', autofocus = true) }}
-      </div>
-      <div class="form-group">
-          <label>City & State</label>
-          <div class="form-inline">
-            <div class="form-group">
-              {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true) }}
-            </div>
-            <div class="form-group">
-              {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true) }}
-            </div>
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="address">Address</label>
-        {{ form.address(class_ = 'form-control', autofocus = true) }}
-      </div>
-      <div class="form-group">
-          <label for="phone">Phone</label>
-          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+<div class="form-wrapper">
+  <form class="form" method="post" action="/venues/{{venue.id}}/edit">
+    <h3 class="form-heading">Edit venue <em>{{ venue.name }}</em> <a href="{{ url_for('index') }}"
+        title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    <div class="form-group">
+      <label for="name">Name</label>
+      {{ form.name(class_ = 'form-control', autofocus = true, value = venue.name) }}
+    </div>
+    <div class="form-group">
+      <label>City & State</label>
+      <div class="form-inline">
+        <div class="form-group">
+          {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true, value = venue.city) }}
         </div>
-      <div class="form-group">
-        <label for="genres">Genres</label>
-        <small>Ctrl+Click to select multiple</small>
-        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', id=form.state, autofocus = true) }}
-      </div>
-      <div class="form-group">
-          <label for="genres">Facebook Link</label>
-          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+        <div class="form-group">
+          <select name="state" id="state" class="form-control" required placeholder="State">
+            {%for x,y in form.state.choices%}
+            <option value="{{ x }}" {% if x in venue.state %} selected="selected" {%endif%}>{{ y }}</option>
+            {% endfor %}
+          </select>
+          <!-- {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true, value = venue.state) }} -->
         </div>
-      <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
-    </form>
-  </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      {{ form.address(class_ = 'form-control', autofocus = true, value = venue.address) }}
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true, value = venue.phone) }}
+    </div>
+    <div class="form-group">
+      <label for="genres">Genres</label>
+      <small>Ctrl+Click to select multiple</small>
+      <select name="genres" id="genres" class="form-control" multiple required
+        placeholder="Genres, separated by commas">
+        {%for x,y in form.genres.choices%}
+        <option value="{{ x }}" {% if x in venue.genres %} selected="selected" {%endif%}>{{ y }}</option>
+        <!-- {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', autofocus = true) }} -->
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="website_link">Website Link</label>
+      {{ form.website_link(class_ = 'form-control', placeholder='http://', autofocus = true, value =
+      venue.website) }}
+    </div>
+    <div class="form-group">
+      <label for="facebook_link">Facebook Link</label>
+      {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true, value =
+      venue.facebook_link) }}
+    </div>
+    <div class="form-group">
+      <label for="image_link">Image Link</label>
+      {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true, value =
+      venue.image_link) }}
+    </div>
+    <div class="form-group">
+      <label for="seeking_talent">Seeking Talent?</label>
+      <input type="checkbox" name="seeking_talent" id="seeking_talent" value="seeking_talent" {%if
+        venue.seeking_talent%}checked{%endif%}>
+      <div class="form-group">
+        <label for="seeking_description">Seeking Description</label>
+        {{ form.seeking_description(class_ = 'form-control', autofocus = true, value =venue.seeking_description) }}
+      </div>
+    </div>
+    <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
+  </form>
+  <form class="form" method="delete" action="/venues/{{venue.id}}/delete">
+    <input type="submit" value="Delete Venue" class="btn btn-primary btn-lg btn-block">
+  </form>
+
+</div>
 {% endblock %}
