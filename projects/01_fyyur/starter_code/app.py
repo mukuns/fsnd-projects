@@ -634,7 +634,7 @@ def edit_artist_submission(artist_id):
     image_link = request.form.get('image_link')
 
     try:
-        artist = Artist.query.get(artist_id)
+        artist = Artist.query.get_or_404(artist_id)
         artist.name = name
         artist.genres = genres
         artist.city = city
