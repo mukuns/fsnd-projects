@@ -770,11 +770,6 @@ def shows():
     #       num_shows should be aggregated based on number of upcoming shows per venue.
     shows_details = db.session.query(
         Venue, Artist, Shows).join(Venue).join(Artist)
-    #     filter(
-    #         Venue.id == Shows.venue_id,
-    #         Artist.id == Shows.artist_id
-    # ).\
-    #     all()
 
     data = [{
         "venue_id": show_details.Venue.id,
@@ -903,6 +898,10 @@ def search_shows_venue():
         } for artist, show, venue in responses]
     }
     return render_template('pages/show.html', results=response, search_term=request.form.get('venue_search_term', ''))
+
+#----------------------------------------------------------------------------#
+# Errors.
+#----------------------------------------------------------------------------#
 
 
 @ app.errorhandler(404)
