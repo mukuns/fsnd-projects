@@ -1,15 +1,15 @@
 from datetime import datetime
-from flask_wtf import Form
-from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, AnyOf, URL
 
 
-class ShowForm(Form):
-    artist_id = StringField(
-        'artist_id'
+class ShowsForm(FlaskForm):
+    artist_id = IntegerField(
+        'artist_id', validators=[DataRequired()]
     )
-    venue_id = StringField(
-        'venue_id'
+    venue_id = IntegerField(
+        'venue_id', validators=[DataRequired()]
     )
     start_time = DateTimeField(
         'start_time',
@@ -18,7 +18,19 @@ class ShowForm(Form):
     )
 
 
-class VenueForm(Form):
+class ShowByArtistForm(FlaskForm):
+    artist_search_term = IntegerField(
+        'artist_id', validators=[DataRequired()]
+    )
+
+
+class ShowByVenueForm(FlaskForm):
+    venue_search_term = IntegerField(
+        'artist_id', validators=[DataRequired()]
+    )
+
+
+class VenueForm(FlaskForm):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -85,7 +97,7 @@ class VenueForm(Form):
         ]
     )
     phone = StringField(
-        'phone'
+        'phone', validators=[DataRequired()]
     )
     image_link = StringField(
         'image_link'
@@ -129,7 +141,7 @@ class VenueForm(Form):
     )
 
 
-class ArtistForm(Form):
+class ArtistForm(FlaskForm):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -194,7 +206,7 @@ class ArtistForm(Form):
     )
     phone = StringField(
         # TODO implement validation logic for state
-        'phone'
+        'phone', validators=[DataRequired()],
     )
     image_link = StringField(
         'image_link', validators=[URL()]
