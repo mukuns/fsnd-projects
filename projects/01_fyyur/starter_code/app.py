@@ -403,6 +403,7 @@ def edit_artist_submission(artist_id):
     # take values from the form submitted, and update existing
     # artist record with ID <artist_id> using the new attributes
     form = ArtistForm(request.form, meta={'csrf': False})
+    error = False
     if form.validate():
         try:
             artist = Artist.query.get_or_404(artist_id)
@@ -412,6 +413,7 @@ def edit_artist_submission(artist_id):
         except ValueError as e:
             print(e)
             db.session.rollback()
+            error = True
         finally:
             db.session.close()
 
