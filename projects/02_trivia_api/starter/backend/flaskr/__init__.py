@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+import traceback
 
 from models import setup_db, Question, Category
 
@@ -106,6 +107,8 @@ def create_app(test_config=None):
             question = Question.query.filter(
                 Question.id == question_id).one_or_none()
 
+            print(question)
+
             if question is None:
                 abort(404)
 
@@ -122,6 +125,7 @@ def create_app(test_config=None):
             })
 
         except:
+            # traceback.print_exc()
             abort(422)
 
     '''
@@ -162,6 +166,7 @@ def create_app(test_config=None):
                     'total_questions': len(Question.query.all())
                 })
         except:
+            # traceback.print_exc()
             abort(422)
 
     '''
@@ -242,7 +247,6 @@ def create_app(test_config=None):
 
         previous_questions = body.get('previous_questions', None)
         category = body.get('quiz_category', None)
-        print(category)
 
         if category['id'] != 0:
             response = Question.query.filter(
@@ -256,9 +260,6 @@ def create_app(test_config=None):
 
         next_questions = [
             next_question.format() for next_question in response if next_question.id not in previous_questions]
-
-        # if not next_questions:
-        #     abort(404)
 
         if next_questions:
             return jsonify({
@@ -306,5 +307,13 @@ def create_app(test_config=None):
             'error': 422,
             'message': 'unprocessable'
         }), 422
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({
+            "success": False,
+            'error': 500,
+            'message': 'internal server error'
+        }), 500
 
     return app
