@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import serverConfig from '../serverConfig.json';
 
 import '../stylesheets/QuizView.css';
 
 const questionsPerPlay = 5; 
+const uri = serverConfig.protocol + serverConfig.domain + serverConfig.port;
 
 class QuizView extends Component {
   constructor(props){
@@ -22,7 +24,7 @@ class QuizView extends Component {
 
   componentDidMount(){
     $.ajax({
-      url: `/categories`, //TODO: update request URL
+      url: uri+`/categories`, //TODO: update request URL
       type: "GET",
       success: (result) => {
         this.setState({ categories: result.categories })
@@ -48,7 +50,7 @@ class QuizView extends Component {
     if(this.state.currentQuestion.id) { previousQuestions.push(this.state.currentQuestion.id) }
 
     $.ajax({
-      url: '/quizzes', //TODO: update request URL
+      url: uri+'/quizzes', //TODO: update request URL
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
@@ -57,7 +59,7 @@ class QuizView extends Component {
         quiz_category: this.state.quizCategory
       }),
       xhrFields: {
-        withCredentials: true
+        withCredentials: false //updated to false as this was throwing a CORS error
       },
       crossDomain: true,
       success: (result) => {

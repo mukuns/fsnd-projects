@@ -301,7 +301,7 @@ def artists():
 #  ----------------------------------------------------------------
 
 
-@ app.route('/artists/search', methods=['POST'])
+@app.route('/artists/search', methods=['POST'])
 def search_artists():
     #
     # implement search on artists with partial string search. Ensure it is case-insensitive.
